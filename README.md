@@ -61,8 +61,11 @@ npm run dev
 
 ## 📁 项目结构
 HCI_InterviewSystem_v2/
+
 ├── public/ # 静态资源
+
 ├── src/ # 源代码
+
 │ ├── components/ # Vue 组件
 │ ├── views/ # 页面视图
 │ ├── router/ # 路由配置
@@ -70,11 +73,7 @@ HCI_InterviewSystem_v2/
 │ └── main.js # 项目入口
 ├── package.json # 项目配置和依赖
 └── README.md # 项目说明
-## 💡 使用说明
 
-1. 启动系统后，你可以创建新的面试会话
-2. 系统支持面试官和面试者两种角色
-3. 面试过程中可以进行实时评价和记录
 
 ## ❓ 常见问题
 
@@ -83,6 +82,7 @@ A: 请确保 Node.js 版本符合要求，并尝试清除缓存后重新安装�
 bash
 npm cache clean --force
 npm install
+
 **Q: 端口已被占用怎么办？**  
 A: 可以指定其他端口：
 bash
