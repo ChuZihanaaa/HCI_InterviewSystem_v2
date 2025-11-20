@@ -1,175 +1,296 @@
 
 
+<script setup>
+import { computed } from 'vue';
+import { RouterView, useRoute, useRouter } from 'vue-router';
+import { sectionTree } from '../constants/sections';
+
+const router = useRouter();
+const route = useRoute();
+
+const activeSectionId = computed(() => route.params.sectionId);
+
+const goToSection = (sectionId) => {
+  router.push(`/section/${sectionId}`);
+};
+
+const isActive = (sectionId) => activeSectionId.value === sectionId;
+</script>
+
 <template>
   <div class="dashboard">
     <header class="header">
       <div class="user-info">
         <img src="/src/assets/avatar.png" alt="Avatar" class="avatar" />
-        <span class="username">用户昵称</span>
+        <div class="user-meta">
+          <span class="username">用户昵称</span>
+          <small class="user-role">高级考生 · 今日已完成 0 个计划</small>
+        </div>
       </div>
-      <button class="logout-button">退出登录</button>
+      <div class="header-actions">
+        <button type="button" class="outline-btn">学习轨迹</button>
+        <button type="button" class="logout-button">退出登录</button>
+      </div>
     </header>
     <div class="content">
       <aside class="sidebar">
-        <ul>
-          <li>
-            <details>
-              <summary>面试</summary>
-              <ul>
-                <li>
-                  <details>
-                    <summary>基础能力</summary>
-                    <ul>
-                      <li>专项A</li>
-                      <li>专项B</li>
-                      <li>专项C</li>
-                    </ul>
-                  </details>
-                </li>
-                <li>
-                  <details>
-                    <summary>人机练习</summary>
-                    <ul>
-                      <li>1v1</li>
-                      <li>多人讨论</li>
-                    </ul>
-                  </details>
-                </li>
-                <li>
-                  <details>
-                    <summary>模拟面试</summary>
-                    <ul>
-                      <li>结构化面试</li>
-                      <li>领导小组面试</li>
-                    </ul>
-                  </details>
+        <h2 class="sidebar-title">功能导航</h2>
+        <nav class="nav-tree">
+          <ul class="nav-list">
+            <li
+              v-for="section in sectionTree"
+              :key="section.id"
+            >
+              <button
+                type="button"
+                class="nav-button"
+                :class="{ active: isActive(section.id) }"
+                @click="goToSection(section.id)"
+              >
+                {{ section.label }}
+              </button>
+              <ul
+                v-if="section.children"
+                class="nav-sub-list"
+              >
+                <li
+                  v-for="child in section.children"
+                  :key="child.id"
+                >
+                  <button
+                    type="button"
+                    class="nav-button sub"
+                    :class="{ active: isActive(child.id) }"
+                    @click="goToSection(child.id)"
+                  >
+                    {{ child.label }}
+                  </button>
+                  <ul
+                    v-if="child.children"
+                    class="nav-sub-list nested"
+                  >
+                    <li
+                      v-for="leaf in child.children"
+                      :key="leaf.id"
+                    >
+                      <button
+                        type="button"
+                        class="nav-button sub nested"
+                        :class="{ active: isActive(leaf.id) }"
+                        @click="goToSection(leaf.id)"
+                      >
+                        {{ leaf.label }}
+                      </button>
+                    </li>
+                  </ul>
                 </li>
               </ul>
-            </details>
-          </li>
-          <li>笔试</li>
-          <li>素质能力提升</li>
-        </ul>
+            </li>
+          </ul>
+        </nav>
       </aside>
       <main class="main-content">
-        <h1>欢迎来到XXX考试系统！</h1>
+        <RouterView />
       </main>
     </div>
     <footer class="footer">
-      <button>意见建议</button>
-      <button>问题反馈</button>
-      <button>联系方式：</button>
+      <button type="button">意见建议</button>
+      <button type="button">问题反馈</button>
+      <button type="button">联系方式</button>
     </footer>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Dashboard',
-};
-</script>
-
 <style scoped>
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden; /* 防止滚动条出现 */
-}
-
 .dashboard {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* 100%视口高度 */
-  width: 100vw;  /* 100%视口宽度 */
-  background-color: #66cccc;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f6ff 0%, #d8ecff 50%, #fef6f0 100%);
+  color: #1f2d3d;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background-color: #66cccc;
-  flex-shrink: 0; /* 保持固定高度，不被压缩 */
+  padding: 24px 40px;
+  background: transparent;
 }
 
 .avatar {
-  width: 50px;
-  height: 50px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 20px rgba(31, 45, 61, 0.1);
 }
 
 .username {
-  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-role {
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.outline-btn {
+  border: 1px solid #94a3b8;
+  background: rgba(255, 255, 255, 0.6);
+  color: #0f172a;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
 }
 
 .logout-button {
-  background-color: white;
+  background-color: #111827;
+  color: #fff;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 12px 24px rgba(17, 24, 39, 0.2);
 }
 
 .content {
   display: flex;
-  flex-grow: 1; /* 占满剩余空间 */
+  flex-grow: 1;
   width: 100%;
-  overflow: auto; /* 如果内容过多，可以滚动 */
+  gap: 24px;
+  padding: 0 40px 40px;
+  box-sizing: border-box;
 }
 
 .sidebar {
-  width: 200px;
-  background-color: #e6e6fa;
-  padding: 10px;
-  flex-shrink: 0; /* 固定宽度 */
-  overflow-y: auto; /* 侧边栏滚动 */
+  width: 320px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08);
+  flex-shrink: 0;
+  overflow-y: auto;
+  backdrop-filter: blur(12px);
 }
 
-.sidebar ul {
-  list-style-type: none;
+.sidebar-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.nav-list,
+.nav-sub-list {
+  list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.sidebar details summary {
+.nav-sub-list {
+  margin-left: 16px;
+  padding-left: 12px;
+  border-left: 1px dashed rgba(148, 163, 184, 0.4);
+}
+
+.nav-sub-list.nested {
+  margin-left: 24px;
+}
+
+.nav-button {
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
   cursor: pointer;
-  font-weight: bold;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
-.sidebar details[open] summary {
-  margin-bottom: 5px;
+.nav-button.sub {
+  font-size: 13px;
+  color: #334155;
 }
 
-.sidebar details ul {
-  margin-left: 20px;
+.nav-button.sub.nested {
+  font-size: 12px;
+  color: #475569;
+}
+
+.nav-button:hover {
+  background: rgba(14, 165, 233, 0.15);
+  color: #0369a1;
+}
+
+.nav-button.active {
+  background: #0ea5e9;
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(14, 165, 233, 0.35);
 }
 
 .main-content {
-  flex-grow: 1; /* 占满剩余空间 */
+  flex-grow: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: #66cccc;
-  overflow: auto; /* 内容多时可以滚动 */
+  align-items: stretch;
+  background: transparent;
+  overflow-y: auto;
 }
 
 .footer {
   display: flex;
   justify-content: center;
-  padding: 10px;
-  background-color: #66cccc;
-  flex-shrink: 0; /* 固定高度，不被压缩 */
+  gap: 16px;
+  padding: 20px 0 32px;
+  background: transparent;
+  flex-shrink: 0;
 }
 
 .footer button {
-  background-color: #333;
-  color: white;
+  background-color: rgba(15, 23, 42, 0.9);
+  color: #fff;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  margin: 0 5px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 500;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+  cursor: pointer;
 }
 
+@media (max-width: 960px) {
+  .content {
+    flex-direction: column;
+    padding: 0 20px 20px;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+}
 </style>
