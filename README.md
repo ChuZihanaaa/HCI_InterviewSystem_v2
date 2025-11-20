@@ -1,8 +1,3 @@
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 # HCI 面试系统 (HCI_InterviewSystem_v2)
 
 <p align="center">
@@ -13,6 +8,11 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 </p>
 
 一个人机交互课程相关的面试系统，基于 Vue 3 开发。
+# Vue 3 + Vite
+
+This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+
+Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
 
 ## 📋 目录
 
@@ -50,10 +50,12 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 1. **克隆代码仓库**
 bash
 git clone https://github.com/ChuZihanaaa/HCI_InterviewSystem_v2.git
+
 2. **安装项目依赖**
 bash
 cd HCI_InterviewSystem_v2
 npm install
+
 3. **启动本地开发服务器**
 bash
 npm run dev
@@ -67,11 +69,17 @@ HCI_InterviewSystem_v2/
 ├── src/ # 源代码
 
 │ ├── components/ # Vue 组件
+
 │ ├── views/ # 页面视图
+
 │ ├── router/ # 路由配置
+
 │ ├── assets/ # 资源文件
+
 │ └── main.js # 项目入口
+
 ├── package.json # 项目配置和依赖
+
 └── README.md # 项目说明
 
 
